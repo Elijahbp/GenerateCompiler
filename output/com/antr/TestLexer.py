@@ -1,4 +1,4 @@
-# Generated from /Users/elijah/PycharmProjects/GenerateCompiler/Test.g4 by ANTLR 4.9.1
+# Generated from /Users/elijah/PycharmProjects/GenerateCompiler/grammarBuchnevIlya.g4 by ANTLR 4.9.1
 from antlr4 import *
 from io import StringIO
 from typing.io import TextIO
@@ -44,7 +44,7 @@ class TestLexer(Lexer):
 
     ruleNames = [ "T__0", "ID", "WS" ]
 
-    grammarFileName = "Test.g4"
+    grammarFileName = "grammarBuchnevIlya.g4"
 
     def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)

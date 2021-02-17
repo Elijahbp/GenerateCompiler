@@ -10,6 +10,8 @@ def create_generator(argv):
     stream = CommonTokenStream(lexer)
     parser = TestParser(stream)
     tree = parser.startRule()
+    walker = ParseTreeWalker()
+    walker.walk()
     print('ok')
 
 
