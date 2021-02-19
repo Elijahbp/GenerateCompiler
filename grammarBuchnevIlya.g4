@@ -1,4 +1,5 @@
 grammar grammarBuchnevIlya;
+WS: [ \n\t] -> skip;
 //<идентификатор>::= <буква> {<буква> | <цифра>}
 IDENTIFIER : [a-zA-Z]+[a-zA-Z0-9]*;
 
@@ -6,7 +7,7 @@ IDENTIFIER : [a-zA-Z]+[a-zA-Z0-9]*;
 numbers: INTEGER | real;
 
 //<числовая_строка>::= {/ <цифра> /}
-number_string: [0-9]+;
+NUMBER_STRING: [0-9]+;
 
 //<целое>::= <двоичное> | <восьмеричное> | <десятичное> | <шестнадцатеричное>
 INTEGER:
@@ -23,13 +24,13 @@ fragment BINARY: [0-1]+('B'|'b');
 fragment OCTAL: [0-7]+('O'|'o');
 
 //<десятичное>::= {/ <цифра> /} [D | d]
-fragment DECIMAL: number_string('D'|'d')?;
+fragment DECIMAL: NUMBER_STRING('D'|'d')?;
 
 //<шестнадцатеричное>::= <цифра> {<цифра> | A | B | C | D | E | F | a | b |  c | d | e | f} (H | h)
-fragment HEXADECIMAL: number_string([0-9]|'A'|'B'|'C'|'D'|'E'|'F'|'a'|'b'|'c'|'d'|'e'|'f')*('H'|'h');
+fragment HEXADECIMAL: NUMBER_STRING([0-9]|'A'|'B'|'C'|'D'|'E'|'F'|'a'|'b'|'c'|'d'|'e'|'f')*('H'|'h');
 
 //<действительное>::= <числовая_строка> <порядок> | [<числовая_строка>] . <числовая_строка> [порядок]
-real: (number_string order) | (number_string)? '.' number_string (order)?;
+real: (NUMBER_STRING order) | (NUMBER_STRING)? '.' NUMBER_STRING (order)?;
 
 //<порядок>::= ( E | e )[+ | -] <числовая_строка>
 order: ('E'|'e') ('+'|'-')?;
@@ -48,7 +49,7 @@ summand: multiplier (operation_multiple multiplier)*;
 //<множитель>::= <идентификатор> | <число> | <логическая_константа> | <унарная_операция> <множитель> | (<выражение>)
 multiplier:
     IDENTIFIER
-    | NUMBERS
+    | numbers
     | BOOL_CONST
     | operation_unary multiplier
     | '(' expression ')'
@@ -58,7 +59,6 @@ operation_relationship: '<>'|'='|'<'|'<='|'>'|'>=';
 operation_summary: '+'|'-'|'or';
 operation_multiple: '*'|'/'|'and';
 operation_unary: '~';
-
 
 //<программа>::= «{» {/ (<описание> | <оператор>) ; /} «}»
 program : '{' (description|operator';')+  '}' ;
@@ -103,3 +103,4 @@ output: 'output' '(' expression (' ' expression)* ')';
 
 //<многострочные_комментарии>::=/* */
 multistr_comment: '/*' '*/';
+
