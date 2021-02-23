@@ -1,10 +1,8 @@
 grammar grammarBuchnevIlya;
 
-//<идентификатор>::= <буква> {<буква> | <цифра>}
-OPEN_PROGRAM: '{';
-CLOSE_PROGRAM: '}';
-END_LINE: ';';
 
+
+//<логическая_константа>::= true | false
 BOOL: 'true'|'false';
 //<тип>::= % | ! | $
 TYPE:
@@ -16,29 +14,31 @@ TYPE:
 WS : [ \t\r\n]+ -> skip ;
 SPACE : ' ';
 
-OPERATION_RELATIONSHIP: '<>'|'='|'<'|'<='|'>'|'>=';
+
+OPERATION_RELATIONSHIP: '='|'<>'|'<'|'<='|'>'|'>=';
 OPERATION_SUMMARY: '+'|'-'|'or';
 OPERATION_MULTIPLE: '*'|'/'|'and';
 OPERATION_UNARY:'~';
 
+//<числовая_строка>::= {/ <цифра> /}
+fragment NUMBER_STRING: [0-9]+;
+
+//<идентификатор>::= <буква> {<буква> | <цифра>}
 IDENTIFIER : [a-zA-Z]([a-zA-Z]|NUMBER_STRING)*;
 
 //<число>::= <целое> | <действительное>
-numbers: INTEGER | real;
+numbers: integer| REAL;
 
-//<числовая_строка>::= {/ <цифра> /}
-NUMBER_STRING: [0-9]+;
 
 //<целое>::= <двоичное> | <восьмеричное> | <десятичное> | <шестнадцатеричное>
-INTEGER:
+integer:
     BINARY
     | OCTAL
     | DECIMAL
     | HEXADECIMAL
     ;
 
-//<действительное>::= <числовая_строка> <порядок> | [<числовая_строка>] . <числовая_строка> [порядок]
-real: (NUMBER_STRING order) | (NUMBER_STRING)? '.' NUMBER_STRING (order)?;
+
 
 //<двоичное>::= {/ 0 | 1 /} (B | b)
 BINARY: [0-1]+('B'|'b');
@@ -47,46 +47,23 @@ BINARY: [0-1]+('B'|'b');
 OCTAL: [0-7]+('O'|'o');
 
 //<десятичное>::= {/ <цифра> /} [D | d]
-DECIMAL: NUMBER_STRING('D'|'d')?;
+DECIMAL: NUMBER_STRING ('D'|'d')?;
 
 //<шестнадцатеричное>::= <цифра> {<цифра> | A | B | C | D | E | F | a | b |  c | d | e | f} (H | h)
-HEXADECIMAL: NUMBER_STRING([0-9][a-fA-F])*('H'|'h');
+HEXADECIMAL: NUMBER_STRING ([0-9]|[a-fA-F])*('H'|'h');
 
-
+//<действительное>::= <числовая_строка> <порядок> | [<числовая_строка>] . <числовая_строка> [порядок]
+REAL: ((NUMBER_STRING ORDER) | ((NUMBER_STRING)? '.' NUMBER_STRING (ORDER)?));
 
 //<порядок>::= ( E | e )[+ | -] <числовая_строка>
-order: ('E'|'e') ('+'|'-')?;
-//<логическая_константа>::= true | false
-
-
-//<выражение>::= <операнд>{<операции_группы_отношения> <операнд>}
-expression: operand ( OPERATION_RELATIONSHIP operand)* ;
-
-//<операнд>::= <слагаемое> {<операции_группы_сложения> <слагаемое>}
-operand: summand (OPERATION_SUMMARY summand)*;
-
-//<слагаемое>::= <множитель> {<операции_группы_умножения> <множитель>}
-summand: multiplier (OPERATION_MULTIPLE multiplier)*;
-
-//<множитель>::= <идентификатор> | <число> | <логическая_константа> | <унарная_операция> <множитель> | (<выражение>)
-multiplier:
-    BOOL
-    |IDENTIFIER
-    | numbers
-    | OPERATION_UNARY multiplier
-    | '(' expression ')'
-    ;
-
+fragment ORDER: ('E'|'e') ('+'|'-')? NUMBER_STRING;
 
 
 //<программа>::= «{» {/ (<описание> | <оператор>) ; /} «}»
-program : OPEN_PROGRAM (description|operator END_LINE)+  CLOSE_PROGRAM;
+program : '{' (description|operator ';')+  '}';
 
 //<описание>::= {<идентификатор> {, <идентификатор> } : <тип> ;}
 description: (IDENTIFIER (',' IDENTIFIER )* ':' TYPE ';')+;
-
-
-
 
 //<оператор>::= <составной> | <присваивания> | <условный> | <фиксированного_цикла> | <условного_цикла> | <ввода> | <вывода>
 operator: composite| assignments|conditional|fixed_cycle|conditional_loop|input_m|output_m;
@@ -112,6 +89,26 @@ input_m: 'input' '(' IDENTIFIER (' ' IDENTIFIER)* ')' ;
 //<вывода>::= output «(»<выражение> { пробел <выражение> }«)»
 output_m: 'output' '(' expression (' ' expression)* ')';
 
+//<выражение>::= <операнд>{<операции_группы_отношения> <операнд>}
+expression: operand ( OPERATION_RELATIONSHIP operand)* ;
+
+//<операнд>::= <слагаемое> {<операции_группы_сложения> <слагаемое>}
+operand: summand (OPERATION_SUMMARY summand)*;
+
+//<слагаемое>::= <множитель> {<операции_группы_умножения> <множитель>}
+summand: multiplier (OPERATION_MULTIPLE multiplier)*;
+
+
+//<множитель>::= <идентификатор> | <число> | <логическая_константа> | <унарная_операция> <множитель> | (<выражение>)
+multiplier:
+    BOOL
+    |IDENTIFIER
+    | numbers
+    | OPERATION_UNARY multiplier
+    | '(' expression ')'
+    ;
+
+
+
 //<многострочные_комментарии>::=/* */
 multistr_comment: '/*' .*? '*/';
-
