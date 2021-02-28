@@ -27,11 +27,11 @@ fragment NUMBER_STRING: [0-9]+;
 IDENTIFIER : [a-zA-Z]([a-zA-Z]|NUMBER_STRING)*;
 
 //<число>::= <целое> | <действительное>
-numbers: integer| REAL;
+NUMBERS: INTEGER| REAL;
 
 
 //<целое>::= <двоичное> | <восьмеричное> | <десятичное> | <шестнадцатеричное>
-integer:
+INTEGER:
     BINARY
     | OCTAL
     | DECIMAL
@@ -103,7 +103,7 @@ summand: multiplier (OPERATION_MULTIPLE multiplier)*;
 multiplier:
     BOOL
     |IDENTIFIER
-    | numbers
+    | NUMBERS
     | OPERATION_UNARY multiplier
     | '(' expression ')'
     ;

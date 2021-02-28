@@ -9,16 +9,6 @@ else:
 
 class grammarBuchnevIlyaVisitor(ParseTreeVisitor):
 
-    # Visit a parse tree produced by grammarBuchnevIlyaParser#numbers.
-    def visitNumbers(self, ctx:grammarBuchnevIlyaParser.NumbersContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by grammarBuchnevIlyaParser#integer.
-    def visitInteger(self, ctx:grammarBuchnevIlyaParser.IntegerContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by grammarBuchnevIlyaParser#program.
     def visitProgram(self, ctx:grammarBuchnevIlyaParser.ProgramContext):
         return self.visitChildren(ctx)

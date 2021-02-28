@@ -8,24 +8,6 @@ else:
 # This class defines a complete listener for a parse tree produced by grammarBuchnevIlyaParser.
 class grammarBuchnevIlyaListener(ParseTreeListener):
 
-    # Enter a parse tree produced by grammarBuchnevIlyaParser#numbers.
-    def enterNumbers(self, ctx:grammarBuchnevIlyaParser.NumbersContext):
-        pass
-
-    # Exit a parse tree produced by grammarBuchnevIlyaParser#numbers.
-    def exitNumbers(self, ctx:grammarBuchnevIlyaParser.NumbersContext):
-        pass
-
-
-    # Enter a parse tree produced by grammarBuchnevIlyaParser#integer.
-    def enterInteger(self, ctx:grammarBuchnevIlyaParser.IntegerContext):
-        pass
-
-    # Exit a parse tree produced by grammarBuchnevIlyaParser#integer.
-    def exitInteger(self, ctx:grammarBuchnevIlyaParser.IntegerContext):
-        pass
-
-
     # Enter a parse tree produced by grammarBuchnevIlyaParser#program.
     def enterProgram(self, ctx:grammarBuchnevIlyaParser.ProgramContext):
         pass
