@@ -3,6 +3,12 @@ from antlr4 import *
 
 from com.antlr.grammarBuchnevIlyaLexer import grammarBuchnevIlyaLexer
 from com.antlr.grammarBuchnevIlyaParser import grammarBuchnevIlyaParser
+from com.antlr.grammarBuchnevIlyaListener import grammarBuchnevIlyaListener
+
+class MyKeyInput(grammarBuchnevIlyaListener):
+    def enterProgram(self, ctx:grammarBuchnevIlyaParser.ProgramContext):
+        print('Lolkekchebureck')
+
 
 def create_generator(argv):
     input_stream = FileStream('test.txt')
@@ -10,6 +16,9 @@ def create_generator(argv):
     stream = CommonTokenStream(lexer)
     parser = grammarBuchnevIlyaParser(stream)
     tree = parser.program()
+    program =MyKeyInput()
+    walker = ParseTreeWalker()
+    walker.walk(program,tree)
     print('ok')
 
 
