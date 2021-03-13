@@ -11,7 +11,7 @@ TYPE:
     | '$'//bool
     ;
 
-WS : [ \t\r\n]+ -> skip ;
+WS : [\t\r\n]+ -> skip ;
 SPACE : ' ';
 COMMA : ',' ;
 COLON : ':';
@@ -89,11 +89,7 @@ fixed_cycle: 'for' BLOCK_OPEN (expression)? ';' (expression)? ';'(expression)? B
 //<условного_цикла>::= do while <выражение> <оператор> loop
 conditional_loop: 'do' 'while' expression operator 'loop';
 
-//<ввода>::= input «(»<идентификатор> {пробел <идентификатор>}«)»
-input_m: 'input' BLOCK_OPEN IDENTIFIER (' ' IDENTIFIER)* BLOCK_CLOSE ;
 
-//<вывода>::= output «(»<выражение> { пробел <выражение> }«)»
-output_m: 'output' BLOCK_OPEN expression (' ' expression)* BLOCK_CLOSE;
 
 //<выражение>::= <операнд>{<операции_группы_отношения> <операнд>}
 expression: operand ( OPERATION_RELATIONSHIP operand)* ;
@@ -111,10 +107,14 @@ multiplier:
     |IDENTIFIER
     | NUMBERS
     | OPERATION_UNARY multiplier
-    | BLOCK_OPEN expression BLOCK_CLOSE
+    | '(' expression ')'
     ;
 
+//<ввода>::= input «(»<идентификатор> {пробел <идентификатор>}«)»
+input_m: 'input' BLOCK_OPEN IDENTIFIER (' ' IDENTIFIER)* BLOCK_CLOSE ;
 
+//<вывода>::= output «(»<выражение> { пробел <выражение> }«)»
+output_m: 'output' BLOCK_OPEN expression ( SPACE expression)* BLOCK_CLOSE;
 
 //<многострочные_комментарии>::=/* */
 multistr_comment: '/*' .*? '*/';

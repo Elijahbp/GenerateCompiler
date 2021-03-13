@@ -1,6 +1,9 @@
 {
     integervar,i : %;
-    i = 2;
+    floatvar: !;
+    let i = 5 ;
+    i = 010010101b;
     integervar = 6;
-    i = i * integervar / 3 * 3;
+    floatvar = 16.32;
+    output(i integervar floatvar 324 false);
 }
