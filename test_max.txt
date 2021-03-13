@@ -1,0 +1,32 @@
+{
+    integervar,i : %;
+    floatvar: !;
+    boolvar: $;
+    let i = 5 ;
+    i = 010010101b;
+    i = 0343151O;
+    i = 1728942179124871294D;
+    i = 129874247981472f277832aH;
+    let floatvar = 5.32132;
+    floatvar = .542e-32;
+    floatvar = 23.32e-12;
+    boolvar = true;
+    if boolvar <> true then{
+        let boolvar = false
+    }
+    else if integervar <= 6 then
+        {
+            output(65 * 32 /32 +12 * 32)
+        }
+        end_else
+    end_else;
+    for( i >= 2 ; i < 50 ; i >= i + 1){
+        input (vnjdvn)
+    };
+    bok : % ;
+    bok = 0 ;
+    do while bok < 12 {
+        bok = bok + 1
+    }
+    loop;
+}

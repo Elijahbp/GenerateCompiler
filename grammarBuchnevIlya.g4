@@ -7,12 +7,18 @@ BOOL: 'true'|'false';
 //<тип>::= % | ! | $
 TYPE:
     '%'//integer
-    | '!'//float
+    | '!'//float/real
     | '$'//bool
     ;
 
 WS : [ \t\r\n]+ -> skip ;
 SPACE : ' ';
+COMMA : ',' ;
+COLON : ':';
+SEMICOLON : ';';
+
+BLOCK_OPEN : '(';
+BLOCK_CLOSE : ')';
 
 
 OPERATION_RELATIONSHIP: '='|'<>'|'<'|'<='|'>'|'>=';
@@ -78,16 +84,16 @@ assignments: ('let')? IDENTIFIER '=' expression;
 conditional: 'if' expression 'then' operator ('else' operator)* 'end_else';
 
 //<фиксированного_цикла>::= for «(» [<выражение>] ; [<выражение>] ; [<выражение>] «)» <оператор>
-fixed_cycle: 'for' '(' (expression)? ';' (expression)? ';'(expression)? ')' operator;
+fixed_cycle: 'for' BLOCK_OPEN (expression)? ';' (expression)? ';'(expression)? BLOCK_CLOSE operator;
 
 //<условного_цикла>::= do while <выражение> <оператор> loop
 conditional_loop: 'do' 'while' expression operator 'loop';
 
 //<ввода>::= input «(»<идентификатор> {пробел <идентификатор>}«)»
-input_m: 'input' '(' IDENTIFIER (' ' IDENTIFIER)* ')' ;
+input_m: 'input' BLOCK_OPEN IDENTIFIER (' ' IDENTIFIER)* BLOCK_CLOSE ;
 
 //<вывода>::= output «(»<выражение> { пробел <выражение> }«)»
-output_m: 'output' '(' expression (' ' expression)* ')';
+output_m: 'output' BLOCK_OPEN expression (' ' expression)* BLOCK_CLOSE;
 
 //<выражение>::= <операнд>{<операции_группы_отношения> <операнд>}
 expression: operand ( OPERATION_RELATIONSHIP operand)* ;
@@ -105,7 +111,7 @@ multiplier:
     |IDENTIFIER
     | NUMBERS
     | OPERATION_UNARY multiplier
-    | '(' expression ')'
+    | BLOCK_OPEN expression BLOCK_CLOSE
     ;
 
 
